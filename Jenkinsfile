@@ -8,6 +8,12 @@ pipeline {
     }
 
     stages {
+        stage('Source') {
+            steps {
+                git branch: 'main', url: 'https://github.com/oswaldein5/test-python'
+            }
+        }
+
         stage('Build') {
             steps {
                 script {
@@ -52,8 +58,8 @@ pipeline {
             }
             post {
                 always {
-                    archiveArtifacts artifacts: 'results/e2e_result.xml', allowEmptyArchive: true
-                    junit 'results/e2e_result.xml'
+                    archiveArtifacts artifacts: 'results/cypress_result.xml', allowEmptyArchive: true
+                    junit 'results/cypress_result.xml'
                 }
             }
         }
