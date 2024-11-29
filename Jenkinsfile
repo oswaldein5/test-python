@@ -35,9 +35,8 @@ pipeline {
             }
             post {
                 always {
-                    // Archivar los resultados de las pruebas unitarias y publicarlos en Jenkins
+                    // Archivar los resultados de las pruebas unitarias
                     archiveArtifacts artifacts: 'results/unit_result.xml', allowEmptyArchive: true
-                    junit 'results/unit_result.xml'
                 }
             }
         }
@@ -51,9 +50,8 @@ pipeline {
             }
             post {
                 always {
-                    // Archivar los resultados de las pruebas de API y publicarlos en Jenkins
+                    // Archivar los resultados de las pruebas de API
                     archiveArtifacts artifacts: 'results/api_result.xml', allowEmptyArchive: true
-                    junit 'results/api_result.xml'
                 }
             }
         }
@@ -67,15 +65,14 @@ pipeline {
             }
             post {
                 always {
-                    // Archivar los resultados de las pruebas de extremo a extremo y publicarlos en Jenkins
+                    // Archivar los resultados de las pruebas de extremo a extremo (E2E)
                     archiveArtifacts artifacts: 'results/cypress_result.xml', allowEmptyArchive: true
-                    junit 'results/cypress_result.xml'
                 }
             }
         }
     }
 
-    post {
+    post {        
         failure {
             script {
                 // Imprimir un mensaje en la consola si el pipeline falla
@@ -90,6 +87,9 @@ pipeline {
             // )
         }
         always {
+            // Publicar los resultados de las pruebas en Jenkins
+            junit 'results/*_result.xml'
+
             // Limpiar el espacio de trabajo después de que el pipeline se complete
             cleanWs()
         }
